@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reto Ortografía · 6º de Primaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Figtree:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Estilo "luz dorada": mandarina, blanco gigante, dorado,
+   verde botella y rojo labio. La lógica del juego no cambia.
+   ========================================================= */
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --display:"Unbounded","Arial Black","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+
+  --bg1:#e5701a; --bg2:#d4600f; --glow:rgba(255,205,130,.30);
+  --on-bg:#ffffff; --on-bg-ink:#2b1004;
+  --paper:#fff4e2; --tint:#fbe0bb; --field:#ffffff;
+  --ink:#2b1004; --muted:#7a4a2a; --line:#ecc99b;
+  --brand:#2b1004; --brand-ink:#fff4e2;
+  --accent:#d9620c;
+  --ok:#0e5a3a; --ok-fill:#0e5a3a; --ok-ink:#ffffff; --ok-soft:#d6ebdd;
+  --bad:#b8381f; --bad-fill:#b8381f; --bad-ink:#ffffff; --bad-soft:#f8d9cf;
+  --gold:#e2ae45; --silver:#b4aca3; --bronze:#b8743f;
+  --lv1:#0e5a3a; --lv1-ink:#ffffff;
+  --lv2:#e2ae45; --lv2-ink:#2b1004;
+  --lv3:#b8381f; --lv3-ink:#ffffff;
+  --focus:#2b1004;
+  --lift:0 26px 44px -22px rgba(72,26,0,.60);
+  --lens-fill:rgba(160,60,0,.30); --lens-fill2:rgba(130,45,0,.42);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg1:#3d1a07; --bg2:#1c0b03; --glow:rgba(242,138,43,.30);
+    --on-bg-ink:#ffd9ae;
+    --paper:#2d1608; --tint:#412111; --field:#1f0e05;
+    --ink:#ffebd2; --muted:#d9b48b; --line:#5b3519;
+    --brand:#f28a1e; --brand-ink:#2b1004;
+    --accent:#f7a84c;
+    --ok:#5bd59b; --ok-fill:#5bd59b; --ok-ink:#06261a; --ok-soft:#113a2a;
+    --bad:#ff9078; --bad-fill:#ff9078; --bad-ink:#3a0e05; --bad-soft:#4b2015;
+    --lv1:#17784d; --lv3:#c4432a;
+    --focus:#ffd28a;
+    --lift:0 26px 44px -22px rgba(0,0,0,.75);
+  }
+}
+:root[data-theme="dark"]{
+  --bg1:#3d1a07; --bg2:#1c0b03; --glow:rgba(242,138,43,.30);
+  --on-bg-ink:#ffd9ae;
+  --paper:#2d1608; --tint:#412111; --field:#1f0e05;
+  --ink:#ffebd2; --muted:#d9b48b; --line:#5b3519;
+  --brand:#f28a1e; --brand-ink:#2b1004;
+  --accent:#f7a84c;
+  --ok:#5bd59b; --ok-fill:#5bd59b; --ok-ink:#06261a; --ok-soft:#113a2a;
+  --bad:#ff9078; --bad-fill:#ff9078; --bad-ink:#3a0e05; --bad-soft:#4b2015;
+  --lv1:#17784d; --lv3:#c4432a;
+  --focus:#ffd28a;
+  --lift:0 26px 44px -22px rgba(0,0,0,.75);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*{-webkit-tap-highlight-color:transparent}
+body{
+  background:
+    radial-gradient(90% 55% at 100% 0%,var(--glow),transparent 70%),
+    linear-gradient(175deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:18px; line-height:1.4;
+}
+/* La "lente": cristal tintado con aro dorado, como las gafas de la foto */
+body::before{
+  content:"";position:fixed;z-index:0;pointer-events:none;
+  width:min(52vmin,460px);aspect-ratio:1;border-radius:50%;
+  right:-13vmin;top:-13vmin;
+  background:
+    radial-gradient(circle at 24% 68%,rgba(255,236,190,.45) 0 3.5%,transparent 4.5%),
+    radial-gradient(circle at 50% 50%,var(--lens-fill),var(--lens-fill2));
+  box-shadow:inset 0 0 0 clamp(8px,1.5vmin,14px) var(--gold),0 30px 70px -30px rgba(60,20,0,.6);
+}
+.wrap{position:relative;z-index:1;width:100%;max-width:640px;margin:0 auto;
+  padding:16px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+
+/* Cabecera */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:clamp(22px,6vw,44px)}
+.logo{
+  display:flex;align-items:center;gap:10px;background:none;border:0;padding:4px 0;cursor:pointer;
+  font-family:var(--display);font-weight:800;font-size:15px;color:#fff;letter-spacing:.01em;text-align:left;
+}
+.logo span{font-weight:500}
+.logo::before{
+  content:"";flex:none;width:26px;height:26px;border-radius:50%;
+  border:5px solid var(--gold);background:rgba(160,60,0,.45);
+}
+
+/* Paneles */
+.card{background:var(--paper);color:var(--ink);border-radius:36px;padding:clamp(22px,5vw,40px);box-shadow:var(--lift)}
+h1,h2,h3{margin:0 0 10px;line-height:1.1;font-family:var(--display)}
+h2{font-size:clamp(20px,5vw,28px);font-weight:800;letter-spacing:-.01em}
+h3{font-size:clamp(17px,4.2vw,21px);font-weight:700}
+p{margin:6px 0 14px;color:var(--muted)}
+.center{text-align:center}
+
+/* Inicio: el titular gigante es la pieza principal */
+.start h1{
+  font-size:clamp(34px,10.4vw,104px);font-weight:800;line-height:1.02;letter-spacing:-.03em;
+  text-transform:uppercase;color:#fff;margin:0 0 18px;
+  text-shadow:0 3px 0 rgba(110,40,0,.22);
+}
+.start h1 .ln{display:block}
+.start>p{font-size:clamp(17px,4.4vw,21px);font-weight:600;color:var(--on-bg-ink);max-width:34em;margin:0 0 26px}
+.start>p b{font-weight:800}
+@keyframes rise{from{clip-path:inset(-30% -5% 100% -5%);transform:translateY(26px)}to{clip-path:inset(-30% -5% -15% -5%);transform:none}}
+.start h1 .ln{animation:rise .85s cubic-bezier(.2,.8,.2,1) both}
+.start h1 .ln:nth-child(2){animation-delay:.14s}
+
+/* Botones */
+.btn{
+  font-family:var(--body);font-weight:800;font-size:17px;letter-spacing:.01em;cursor:pointer;
+  border:2px solid var(--brand);border-radius:999px;padding:14px 26px;min-height:54px;
+  color:var(--brand-ink);background:var(--brand);width:100%;margin-top:12px;
+  transition:transform .12s,background .12s,box-shadow .12s;
+}
+.btn:active{transform:scale(.98)}
+.btn.secondary{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.small{width:auto;font-size:14px;padding:8px 18px;min-height:44px;margin:0}
+.btn:disabled{opacity:.6;cursor:default}
+.btn:focus-visible,.opt:focus-visible,.lvl:focus-visible,.tab:focus-visible,.logo:focus-visible,input:focus-visible{
+  outline:3px solid var(--focus);outline-offset:3px;
+}
+.btnrow,#endBtns{display:grid;gap:10px;margin-top:12px}
+.btnrow{margin-top:20px}
+.btnrow .btn,#endBtns .btn{margin:0}
+.count{
+  display:inline-block;min-width:26px;padding:0 8px;margin-left:6px;border-radius:999px;
+  background:var(--bad-fill);color:var(--bad-ink);font-size:14px;line-height:22px;
+}
+
+/* Formularios */
+label{font-weight:800;display:block;margin:0 0 8px;text-align:left;font-size:16px}
+label+input,form label{margin-top:0}
+form label{margin-top:14px}
+label small{font-weight:500;color:var(--muted)}
+input[type=text]{
+  font-family:var(--body);font-size:20px;font-weight:600;width:100%;padding:14px 22px;border-radius:999px;
+  border:2px solid var(--line);background:var(--field);color:var(--ink);
+}
+input[type=text]:focus{border-color:var(--ink)}
+input::placeholder{color:var(--muted);opacity:.8}
+
+/* Niveles */
+.levels{display:grid;gap:12px;margin-top:18px}
+.lvl{
+  font-family:var(--display);cursor:pointer;border:0;border-radius:26px;text-align:left;min-height:68px;
+  padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-weight:700;font-size:20px;box-shadow:0 16px 26px -16px rgba(30,10,0,.65);
+  transition:transform .12s,box-shadow .12s;
+}
+.lvl small{display:block;font-family:var(--body);font-weight:600;font-size:14px;margin-top:2px}
+.lvl .st{font-family:var(--body);font-size:20px;letter-spacing:2px;white-space:nowrap}
+.lvl:active{transform:scale(.98)}
+.lvl[data-level="facil"]{background:var(--lv1);color:var(--lv1-ink)}
+.lvl[data-level="medio"]{background:var(--lv2);color:var(--lv2-ink)}
+.lvl[data-level="dificil"]{background:var(--lv3);color:var(--lv3-ink)}
+
+/* Juego */
+.hud{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}
+.hud .pill{background:none;padding:0;border-radius:0}
+.hud .pill:last-child{text-align:right}
+.hud .pill small{color:var(--on-bg-ink);font-weight:700;font-size:14px}
+.hud .pill b{font-family:var(--display);font-weight:800;font-size:clamp(34px,9vw,56px);line-height:1;color:#fff;text-shadow:0 3px 0 rgba(110,40,0,.22)}
+.pill{background:var(--tint);border-radius:24px;padding:12px 16px;text-align:center;font-weight:800}
+.pill small{display:block;font-weight:600;color:var(--muted);font-size:14px}
+.pill b{font-family:var(--display);font-size:28px;color:var(--accent)}
+.chips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;min-height:30px}
+.chip{font-size:13px;font-weight:800;border-radius:999px;padding:4px 14px;color:#fff;background:var(--ink)}
+.chip.facil{background:var(--lv1);color:var(--lv1-ink)}
+.chip.medio{background:var(--lv2);color:var(--lv2-ink)}
+.chip.dificil{background:var(--lv3);color:var(--lv3-ink)}
+.chip.rev{background:transparent;color:var(--ink);border:2px solid var(--gold);padding:2px 12px}
+.question{text-align:center;font-family:var(--display);font-size:clamp(18px,4.6vw,24px);font-weight:700;line-height:1.2;margin:8px 0 24px}
+.question .hint{display:block;font-family:var(--body);font-size:15px;font-weight:500;color:var(--muted);margin-top:8px;line-height:1.35}
+.opts{display:grid;gap:12px}
+.opt{
+  font-family:var(--body);font-size:clamp(22px,6.2vw,30px);font-weight:800;text-align:center;cursor:pointer;
+  background:var(--field);color:var(--ink);border:2px solid var(--line);border-radius:28px;
+  padding:16px 14px;min-height:68px;overflow-wrap:anywhere;
+  transition:transform .12s,background .12s,border-color .12s;
+}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:active:not(:disabled){transform:scale(.98)}
+.opt.good{background:var(--ok-fill);border-color:var(--ok-fill);color:var(--ok-ink)}
+.opt.bad{background:var(--bad-fill);border-color:var(--bad-fill);color:var(--bad-ink)}
+.opt:disabled{cursor:default}
+.feedback{min-height:34px;text-align:center;font-weight:800;font-size:19px;margin-top:16px}
+.feedback.ok{color:var(--ok)} .feedback.ko{color:var(--bad)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+.pop{animation:pop .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .3s ease}
+@media (prefers-reduced-motion: reduce){.pop,.shake,.start h1 .ln{animation:none}}
+
+/* Fin */
+.big-score{font-family:var(--display);font-size:clamp(64px,18vw,120px);font-weight:800;color:var(--accent);line-height:1;text-align:center;letter-spacing:-.03em}
+.review{background:var(--ok-soft);border:2px dashed var(--ok);border-radius:24px;padding:14px 18px;margin:16px 0;text-align:center;color:var(--ink)}
+.review b{font-size:26px;color:var(--ok)}
+.review s{color:var(--bad)}
+.review small{display:block;color:var(--muted);font-size:14px;margin-top:4px}
+.err{color:var(--bad);font-weight:700;min-height:22px;margin:6px 0 0}
+.sumrow{display:flex;gap:10px;margin:16px 0}
+.sumrow .pill{flex:1}
+#endBtns{margin-top:20px}
+
+/* Ranking */
+.tabs{display:flex;gap:6px;margin:14px 0 6px;padding:5px;border-radius:999px;background:var(--tint)}
+.tab{
+  flex:1;font-family:var(--body);font-weight:800;font-size:15px;cursor:pointer;min-height:44px;
+  border:0;background:transparent;color:var(--muted);border-radius:999px;padding:8px 4px;
+  transition:background .12s,color .12s;
+}
+.tab[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
+.rank,.flist{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px;width:100%}
+.rank li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;background:var(--tint);border-radius:22px;padding:10px 16px}
+.rank li.me{outline:3px solid var(--ink);outline-offset:2px}
+.pos{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:14px;font-weight:700;background:var(--paper);color:var(--ink)}
+.rank li:nth-child(1) .pos{background:var(--gold);color:#2b1004}
+.rank li:nth-child(2) .pos{background:var(--silver);color:#2b1004}
+.rank li:nth-child(3) .pos{background:var(--bronze);color:#fff}
+.rname{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rscore{font-family:var(--display);font-weight:800;font-size:20px;color:var(--accent)}
+.empty{text-align:center;color:var(--muted);padding:18px 0}
+.mode{font-size:13px;color:var(--muted);text-align:center;margin-top:16px}
+
+/* Mis fallos */
+.flist li{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--tint);border-radius:22px;padding:12px 18px}
+.flist .w{font-weight:800;font-size:22px}
+.flist .meta{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);white-space:nowrap}
+.dots{letter-spacing:2px;color:var(--ok);font-size:18px}
+
+/* Pantallas pequeñas */
+@media (max-width:360px){
+  .logo{font-size:13px}
+  .btn.small{font-size:13px;padding:8px 12px}
+  .card{padding:18px}
+  .lvl{font-size:17px;padding:10px 14px}
+  .lvl small{font-size:12px}
+  .lvl .st{font-size:16px}
+  .rank li{grid-template-columns:38px 1fr auto;padding:8px 12px;gap:8px}
+  .tab{font-size:13px}
+}
+
+/* Tablet y ordenador */
+@media (min-width:700px){
+  body{font-size:20px}
+  .wrap{max-width:880px;padding-top:28px;padding-bottom:64px}
+  .logo{font-size:18px}
+  .levels{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+  .lvl{flex-direction:column;justify-content:center;text-align:center;padding:26px 14px;gap:6px;font-size:26px;min-height:130px}
+  .lvl small{margin-top:4px}
+  .opts{grid-template-columns:repeat(3,1fr);gap:16px}
+  .opt{padding:34px 10px;min-height:110px;display:flex;align-items:center;justify-content:center;font-size:28px}
+  .btnrow{grid-template-columns:1fr 1fr}
+  #endBtns{grid-template-columns:1fr 1fr}
+  #btnAgain{grid-column:1 / -1}
+  .rank,.flist,.tabs{max-width:620px;margin-left:auto;margin-right:auto}
+  .rank{margin-top:14px}.flist{margin-top:14px}
+  #nameForm{max-width:460px;margin:0 auto}
+  .card>.btn,.card>.btn.secondary{display:block;max-width:460px;margin-left:auto;margin-right:auto}
+  .sumrow{max-width:460px;margin-left:auto;margin-right:auto}
+}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{transform:translateY(-2px)}
+  .lvl:hover{transform:translateY(-3px)}
+}
+@media (hover:none){.opt:hover:not(:disabled){border-color:var(--line)}}
+button,.opt,.lvl,.tab{touch-action:manipulation}
+.kbd-hint{display:none}
+@media (hover:hover) and (pointer:fine){.kbd-hint{display:inline}}
+
+/* Móvil en horizontal (poca altura) */
+@media (max-height:480px) and (orientation:landscape){
+  .wrap{padding-top:8px;padding-bottom:16px}
+  header.top{margin-bottom:12px}
+  .card{padding:16px 20px;border-radius:28px}
+  .question{margin:2px 0 10px;font-size:17px}
+  .question .hint{display:none}
+  .hud{margin-bottom:8px}
+  .hud .pill b{font-size:26px}
+  .opts{grid-template-columns:repeat(3,1fr);gap:10px}
+  .opt{padding:12px 8px;min-height:56px;font-size:22px}
+  .feedback{margin-top:8px;min-height:26px;font-size:16px}
+  .levels{grid-template-columns:repeat(3,1fr)}
+  .lvl{flex-direction:column;text-align:center;padding:10px 8px;font-size:18px;min-height:0}
+  .start h1{font-size:30px}
+  p{margin:4px 0 8px}
+}
+
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <button class="logo" id="logo" type="button" aria-label="Ir al inicio">Reto <span>Ortografía</span></button>
+    <button class="btn small" id="btnRankTop" type="button">Récords</button>
+  </header>
+
+  <!-- INICIO -->
+  <section id="screenStart" class="start">
+    <h1><span class="ln">¿Cómo se</span><span class="ln">escribe?</span></h1>
+    <p>Elige la palabra bien escrita. Cada acierto suma <b>1 punto</b>… ¡pero si fallas, se acaba la partida!</p>
+
+    <div class="card">
+      <label for="inPlayer">¿Cómo te llamas? <small>(así guardo tus fallos para repasarlos)</small></label>
+      <input type="text" id="inPlayer" maxlength="24" autocomplete="off" placeholder="Tu nombre">
+
+      <div class="levels" id="levels"></div>
+
+      <div class="btnrow">
+        <button class="btn secondary" id="btnFallos" type="button">Mis fallos <span class="count" id="fallosCount" hidden>0</span></button>
+        <button class="btn secondary" id="btnRankStart" type="button">Ver los 10 mejores</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- JUEGO / REPASO -->
+  <section id="screenGame" hidden>
+    <div class="hud">
+      <div class="pill"><small id="hudL1">Puntos</small><b id="hudV1">0</b></div>
+      <div class="pill"><small id="hudL2">Récord</small><b id="hudV2">0</b></div>
+    </div>
+    <div class="card">
+      <div class="chips" id="chips"></div>
+      <div class="question">¿Cuál está bien escrita?<span class="hint">Toca la opción correcta<span class="kbd-hint"> · o pulsa 1, 2 o 3 en el teclado</span></span></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- FIN DE PARTIDA -->
+  <section id="screenEnd" class="card" hidden>
+    <div class="center">
+      <div class="chips" id="endChip"></div>
+      <h2 id="endTitle">¡Fin de la partida!</h2>
+      <div class="big-score" id="endScore">0</div>
+      <p id="endSub">palabras seguidas</p>
+    </div>
+    <div class="review" id="review" hidden></div>
+
+    <form id="nameForm" hidden novalidate>
+      <h3 class="center">¡Estás entre los 10 mejores!</h3>
+      <label for="inName">Tu nombre</label>
+      <input type="text" id="inName" maxlength="24" autocomplete="off" placeholder="Nombre y primer apellido">
+      <label for="inClass">Tu clase <small>(opcional)</small></label>
+      <input type="text" id="inClass" maxlength="10" autocomplete="off" placeholder="Ej.: 6ºA">
+      <div class="err" id="formErr" role="alert"></div>
+      <button class="btn" type="submit">Guardar mi puntuación</button>
+    </form>
+
+    <p class="center" id="noTop" hidden>Aún no has entrado en el top 10 de este nivel. ¡Sigue practicando!</p>
+
+    <div id="endBtns">
+      <button class="btn" id="btnAgain" type="button">Jugar otra vez</button>
+      <button class="btn secondary" id="btnEndRepaso" type="button">Repasar mis fallos</button>
+      <button class="btn secondary" id="btnEndRank" type="button">Ver récords</button>
+      <button class="btn secondary" id="btnEndHome" type="button">Cambiar de nivel</button>
+    </div>
+  </section>
+
+  <!-- FIN DE REPASO -->
+  <section id="screenRevEnd" class="card center" hidden>
+    <h2 id="revTitle">¡Repaso terminado!</h2>
+    <div class="sumrow">
+      <div class="pill"><small>Dominadas</small><b id="revMastered">0</b></div>
+      <div class="pill"><small>Te quedan</small><b id="revLeft">0</b></div>
+    </div>
+    <p id="revMsg"></p>
+    <button class="btn" id="btnRevAgain" type="button">Seguir repasando</button>
+    <button class="btn secondary" id="btnRevHome" type="button">Volver al inicio</button>
+  </section>
+
+  <!-- MIS FALLOS -->
+  <section id="screenFallos" class="card" hidden>
+    <h2 class="center">Mis fallos</h2>
+    <p class="center" id="fallosIntro"></p>
+    <ul class="flist" id="flist"></ul>
+    <div class="empty" id="fallosEmpty" hidden>¡No tienes fallos pendientes!<br>Cuando te equivoques en una palabra, aparecerá aquí.</div>
+    <button class="btn" id="btnStartRepaso" type="button">Repasar ahora</button>
+    <button class="btn secondary" id="btnFallosBack" type="button">Volver</button>
+  </section>
+
+  <!-- RANKING -->
+  <section id="screenRank" class="card" hidden>
+    <h2 class="center">Los 10 mejores</h2>
+    <div class="tabs" id="tabs" role="group" aria-label="Nivel">
+      <button class="tab" type="button" data-level="facil" aria-pressed="false">★ Fácil</button>
+      <button class="tab" type="button" data-level="medio" aria-pressed="false">★★ Medio</button>
+      <button class="tab" type="button" data-level="dificil" aria-pressed="false">★★★ Difícil</button>
+    </div>
+    <ol class="rank" id="rankList"></ol>
+    <div class="empty" id="rankEmpty" hidden>Todavía no hay récords en este nivel. ¡Sé el primero!</div>
+    <button class="btn" id="btnBack" type="button">Volver</button>
+    <div class="mode" id="modeNote"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* =====================================================================
+   BANCO DE PALABRAS  [correcta, incorrecta, incorrecta]
+   ===================================================================== */
+var LEVELS = {
+ facil:{ label:"Fácil", stars:"★", desc:"Palabras de todos los días", words:[
+  ["huevo","uevo","huebo"],["hacer","acer","hazer"],["ahora","ahóra","aora"],["calle","caye","calye"],
+  ["lluvia","yuvia","llubia"],["cielo","zielo","sielo"],["zapato","sapato","zapatto"],["ciudad","siudad","ciudat"],
+  ["cabeza","cabesa","kabeza"],["queso","keso","quezo"],["guerra","gerra","guera"],["hueso","ueso","huezo"],
+  ["hombre","ombre","hombré"],["hospital","ospital","hospitál"],["historia","istoria","hisotria"],["viaje","viage","biaje"],
+  ["bruja","bruxa","brucha"],["jirafa","girafa","jirrafa"],["abeja","abexa","aveja"],["escribir","escrivir","esscribir"],
+  ["recibir","recivir","resibir"],["ventana","bentana","ventanna"],["vecino","becino","vesino"],["llave","yave","llabe"],
+  ["lleno","yeno","llenno"],["hielo","yelo","ielo"],["yate","llate","jate"],["yeso","lleso","jeso"],
+  ["rey","rei","rrey"],["jersey","yersey","gersey"],["gigante","gijante","jigante"],["colegio","colejio","coleggio"],
+  ["mensaje","mensage","menssaje"],["garaje","garage","garahe"],["avión","abión","avion"],["bienvenido","bienbenido","vienvenido"],
+  ["zanahoria","sanahoria","zanaoria"],["almohada","almoada","almuhada"],["desayuno","desayúno","dessayuno"],["cohete","coete","cohette"],
+  ["también","tambien","tanbién"],["árbol","arbol","árvol"],["lápiz","lapiz","lápis"],["rápido","rapido","rrápido"],
+  ["canción","cancion","canzión"],["corazón","corazon","corasón"],["teléfono","telefono","teléfonó"],["médico","medico","mético"],
+  ["fácil","facil","fácill"],["invierno","imbierno","inbierno"],["tobillo","tovillo","tobiyo"],["televisión","televición","telebisión"],
+  ["decisión","desisión","decición"],["biblioteca","bibloteca","viblioteca"],["aprender","aprhender","aprenter"],["bolígrafo","boligrafo","volígrafo"],
+  ["texto","testo","tecsto"],["sexto","sesto","sexito"],["examen","eczamen","exámen"],["éxito","exito","ésito"],
+  ["explicar","esplicar","explikar"],["imposible","inposible","imposibel"],
+  ["amarillo","amarrillo","hamarillo"],["lámpara","lampara","lanpara"],["caballo","cavallo","cabayo"],["escuela","eskuela","escuella"],
+  ["bonito","vonito","bonitto"],["bicicleta","vicicleta","bicicletta"],["verano","berano","verrano"],["vestido","bestido","vestído"],
+  ["abuelo","avuelo","abuello"],["hermano","ermano","hermmano"],["hormiga","ormiga","hormigga"],["hoja","oja","hoxa"],
+  ["ojo","hojo","ogo"],["mariposa","maripossa","marriposa"],["mochila","mochilla","mojila"],["cocina","cosina","cozina"],
+  ["cumpleaños","cumpleanios","cunpleaños"],["pizarra","pisarra","pizara"],["profesor","proffesor","profesór"],["zorro","sorro","zoro"],
+  ["ratón","raton","rratón"],["tortuga","tortuca","tortuka"],["bailar","vailar","baylar"],["jardín","gardín","jardin"],
+  ["pájaro","pajaro","páxaro"],["cuaderno","quaderno","cuadernno"],["sábado","sabado","sávado"],["miércoles","miercoles","miércolés"],
+  ["octubre","octobre","otubre"],["noviembre","noviebre","novienbre"],["diciembre","diziembre","disiembre"],["bocadillo","vocadillo","bocadiyo"],
+  ["ordenador","hordenador","ordenadór"],["botella","votella","boteya"],["estrella","estreya","estrela"],["cuchillo","cuchiyo","cuchilo"],
+  ["gallina","gayina","galina"],["ardilla","ardiya","ardila"],["castillo","castiyo","castilo"],["tijeras","tigeras","tixeras"]
+ ]},
+ medio:{ label:"Medio", stars:"★★", desc:"Con h, g/j, x, tildes…", words:[
+  ["hierba","ierba","yierba"],["hierro","ierro","hiero"],["exagerar","exajerar","esagerar"],["vehículo","vehiculo","behículo"],
+  ["ingeniero","injeniero","ingeñiero"],["extraño","estraño","extrano"],["excursión","escursión","excurción"],["exterior","esterior","exterrior"],
+  ["conserje","conserge","consserje"],["envolver","enbolver","envolber"],["campeón","canpeón","campeon"],["paraguas","paragüas","parahuas"],
+  ["difícil","dificil","dificíl"],["humedad","umedad","humedat"],["alrededor","al rededor","alrrededor"],["rugir","rujir","rrugir"],
+  ["dirigir","dirijir","dirigír"],["recoger","recojer","recoguer"],["elegir","elejir","elegír"],["proteger","protejer","protegér"],
+  ["tragedia","trajedia","tragédia"],["exacto","esacto","exato"],["expresión","espresión","expreción"],["experiencia","esperiencia","experencia"],
+  ["atención","atensión","atencion"],["comunicación","comunicasión","comunicazión"],["lección","leccion","lecsión"],["dirección","direción","dirrección"],
+  ["origen","orijen","orígen"],["agencia","ajencia","agensia"],["biología","biolojía","biologia"],["religión","relijión","religion"],
+  ["oxígeno","oxigeno","okígeno"],["gimnasio","jimnasio","gimnacio"],["exposición","exposicion","esposición"],["incendio","insendio","incéndio"],
+  ["resbalar","resvalar","rresbalar"],["cerrojo","cerroxo","cerrogo"],["huérfano","uérfano","huerfano"],["ambulancia","anbulancia","ambulansia"],
+  ["herramienta","erramienta","herramineta"],["química","quimica","kímica"],["búho","buho","buo"],["acción","acsión","ación"],
+  ["exclamación","esclamación","exclamasión"],["exprimir","esprimir","exprimír"],["extender","estender","extendér"],["extranjero","estranjero","extrangero"],
+  ["extraordinario","estraordinario","extraordinário"],["inventar","imbentar","inventár"],["trabajar","trabaxar","trabagar"],["gente","jente","gentte"],
+  ["general","jeneral","generál"],["geografía","jeografía","geografia"],["energía","enerjía","energia"],["imagen","imájen","imagén"],
+  ["magia","majia","magía"],["tejado","texado","tegado"],["ejercicio","ejersicio","egercicio"],["ejemplo","egemplo","ejenplo"],
+  ["vegetal","vejetal","begetal"],["lógica","logica","lójica"],["pasajero","pasagero","pasaxero"],["tarjeta","targeta","tarxeta"],
+  ["herencia","erencia","herensia"],["hélice","élice","helice"],["higiene","igiene","hijiene"],["hipopótamo","ipopótamo","hipopotamo"],
+  ["horizonte","orizonte","horisonte"],["humano","umano","hummano"],["hazaña","azaña","hazana"],["ayuntamiento","hayuntamiento","ayuntamento"],
+  ["llanto","yanto","llantto"],["bellota","beyota","belota"],["tobogán","tobogan","tovogán"],["devolver","debolver","devolvér"],
+  ["servicio","cervicio","serbicio"],["voluntario","boluntario","voluntaro"],["cabello","cavello","cabeyo"],["calcetín","calcetin","calzetín"],
+  ["cebolla","sebolla","cevolla"],["cereza","sereza","cerezza"],["delfín","delfin","delphín"],["gaviota","gabiota","gaviotta"],
+  ["lavabo","lababo","labavo"],["rebaño","rebanio","revaño"],["abrigo","avrigo","abrigó"],["bandera","vandera","banndera"],
+  ["biberón","viberón","biberon"],["camión","camion","kamión"],["cuidado","cuydado","cuidao"]
+ ]},
+ dificil:{ label:"Difícil", stars:"★★★", desc:"¡Solo para expertos!", words:[
+  ["murciélago","murcielago","murciégalo"],["pingüino","pinguino","pingüíno"],["cigüeña","ciguena","cigueña"],["vergüenza","verguenza","berguenza"],
+  ["antigüedad","antiguedad","antigüedat"],["ambigüedad","ambiguedad","ambigüedat"],["lingüística","linguística","lingüistica"],["bilingüe","bilingue","vilingüe"],
+  ["desagüe","desague","desagúe"],["exuberante","exuverante","esuberante"],["exhausto","exausto","esausto"],["exhibir","exibir","esibir"],
+  ["exhaustivo","exaustivo","exhaustibo"],["hipótesis","hipotesis","ipótesis"],["bóveda","bobeda","bóbeda"],["obvio","ovvio","obio"],
+  ["subvención","subbención","suvención"],["abreviatura","abrebiatura","avreviatura"],["vaivén","vaiven","baibén"],["inmediato","immediato","inmediáto"],
+  ["innecesario","inecesario","innesesario"],["ilegal","illegal","ilegál"],["irrompible","irompible","inrompible"],["adolescente","adolecente","adolesente"],
+  ["aterrizaje","aterrisaje","aterrizage"],["subrayar","subrallar","suvrayar"],["reivindicar","reinvindicar","reibindicar"],["desahogo","desaogo","desahoo"],
+  ["deshacer","desacer","dehacer"],["rehén","reén","rehen"],["prohibir","proibir","prohivir"],["alcohol","alcol","alchol"],
+  ["búsqueda","busqueda","búskeda"],["quizás","quizas","kizás"],["dieciséis","dieciseis","diezisséis"],["veintiséis","veintiseis","veinticéis"],
+  ["cónyuge","cónyugue","cónyuje"],["ejército","ejercito","exército"],["acertijo","acertigo","azertijo"],["exhalar","exalar","esalar"],
+  ["transeúnte","transeunte","transehúnte"],["ahínco","ainco","ahinco"],["bahía","bahia","baía"],["albahaca","albaca","albahaka"],
+  ["vahído","vaído","vahido"],["zigzag","zizzag","sigzag"],["abstracto","abtracto","abstrato"],["adquirir","aquirir","adkirir"],
+  ["atmósfera","atmosfera","atmófera"],["catástrofe","catastrofe","catástrofé"],["colmillo","colmiyo","comillo"],["crónica","cronica","crónika"],
+  ["cumbre","cunbre","cúmbre"],["inmenso","immenso","inmenzo"],["perspectiva","perspetiva","persepctiva"],["tranvía","tranvia","tramvía"],
+  ["huésped","huesped","uésped"],["cohibido","coibido","cohivido"],["exigir","exijir","esigir"],["jeroglífico","geroglífico","jeroglifico"],
+  ["magnífico","magnifico","magníphico"],["extravagante","estravagante","extrabagante"],["escasez","escasés","escaséz"],["superficie","superfície","superfisie"],
+  ["inconsciente","inconsiente","inconciente"]
+ ]}
+};
+var LEVEL_KEYS=["facil","medio","dificil"];
+
+/* =====================================================================
+   UTILIDADES
+   ===================================================================== */
+function $(id){return document.getElementById(id);}
+function shuffle(a){
+  a=a.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+
+var screens=["screenStart","screenGame","screenEnd","screenRevEnd","screenFallos","screenRank"];
+var lastScreen="screenStart";
+function show(id){
+  screens.forEach(function(s){$(s).hidden=(s!==id);});
+  if(id!=="screenRank" && id!=="screenFallos") lastScreen=id;
+  window.scrollTo(0,0);
+}
+function chip(text,cls){
+  var s=document.createElement("span"); s.className="chip "+(cls||""); s.textContent=text; return s;
+}
+function levelChip(k){return chip(LEVELS[k].stars+" "+LEVELS[k].label,k);}
+
+/* =====================================================================
+   JUGADOR Y FALLOS (se guardan en este dispositivo, por nombre)
+   ===================================================================== */
+function playerName(){ return $("inPlayer").value.trim().replace(/\s+/g," "); }
+
+var memFallos={};
+var Fallos={
+  key:function(){ return "ort6_fallos_"+(playerName()||"invitado").toLowerCase(); },
+  load:function(){
+    var k=this.key(), raw=lsGet(k);
+    if(raw===null) return (memFallos[k]||[]).slice();
+    try{var a=JSON.parse(raw); return Array.isArray(a)?a:[];}catch(e){return [];}
+  },
+  save:function(a){
+    var k=this.key(); memFallos[k]=a.slice(); lsSet(k,JSON.stringify(a));
+  },
+  count:function(){return this.load().length;},
+  find:function(a,c){for(var i=0;i<a.length;i++){if(a[i].w[0]===c) return i;} return -1;},
+  add:function(w,level){
+    var a=this.load(), i=this.find(a,w[0]);
+    if(i>=0){a[i].box=0;a[i].t=Date.now();}
+    else a.push({w:w,l:level,box:0,t:Date.now()});
+    this.save(a);
+  },
+  wrong:function(c){
+    var a=this.load(), i=this.find(a,c);
+    if(i>=0){a[i].box=0;a[i].t=Date.now();this.save(a);}
+  },
+  /* acierto en repaso: devuelve true si la palabra queda dominada (2 aciertos seguidos) */
+  right:function(c){
+    var a=this.load(), i=this.find(a,c);
+    if(i<0) return false;
+    a[i].box=(a[i].box||0)+1;
+    var done=a[i].box>=2;
+    if(done) a.splice(i,1);
+    this.save(a);
+    return done;
+  }
+};
+function refreshFallosCount(){
+  var n=Fallos.count(), c=$("fallosCount");
+  c.textContent=String(n); c.hidden=n===0;
+}
+
+/* =====================================================================
+   RANKING (uno por nivel; compartido si es posible, si no, en este dispositivo)
+   ===================================================================== */
+var Ranking={
+  mode:"local", db:null, writeFailed:false,
+  lists:{facil:[],medio:[],dificil:[]},
+  localLists:{facil:[],medio:[],dificil:[]},
+  onChange:function(){},
+  sortTrim:function(arr){
+    arr.sort(function(a,b){return (b.score-a.score)||((a.date||0)-(b.date||0));});
+    return arr.slice(0,10);
+  },
+  readLocal:function(k){
+    try{var a=JSON.parse(lsGet("ort6_records_"+k)||"[]"); return Array.isArray(a)?a:[];}catch(e){return [];}
+  },
+  qualifies:function(level,score){
+    var l=this.lists[level];
+    if(score<=0) return false;
+    return l.length<10 || score>l[l.length-1].score;
+  },
+  add:function(level,entry){
+    var self=this;
+    function local(){
+      var l=self.localLists[level]; l.push(entry);
+      self.localLists[level]=self.sortTrim(l);
+      lsSet("ort6_records_"+level,JSON.stringify(self.localLists[level]));
+      self.lists[level]=self.localLists[level].slice();
+      self.onChange();
+    }
+    if(self.mode==="shared" && self.db && !self.writeFailed){
+      return self.db.collection("scores_"+level).add(entry).catch(function(){
+        // Sin permiso para escribir en el ranking compartido: se guarda en este dispositivo
+        self.writeFailed=true; self.mode="local";
+        LEVEL_KEYS.forEach(function(k){self.lists[k]=self.localLists[k].slice();});
+        local();
+      });
+    }
+    local();
+    return Promise.resolve();
+  },
+  init:function(){
+    var self=this;
+    LEVEL_KEYS.forEach(function(k){
+      self.localLists[k]=self.sortTrim(self.readLocal(k));
+      self.lists[k]=self.localLists[k].slice();
+    });
+    try{
+      if(window.claude && typeof window.claude.use==="function"){
+        window.claude.use("db").then(function(db){
+          if(!db) return;
+          self.db=db;
+          LEVEL_KEYS.forEach(function(k){
+            try{
+              db.collection("scores_"+k).orderBy("score","desc").limit(10).onSnapshot(function(snap){
+                if(self.writeFailed) return;
+                var arr=[];
+                snap.docs.forEach(function(d){
+                  var v=typeof d.data==="function"?d.data():d.data;
+                  if(v && typeof v.score==="number") arr.push(v);
+                });
+                self.mode="shared"; self.lists[k]=self.sortTrim(arr); self.onChange();
+              },function(){ /* se mantiene el ranking local */ });
+            }catch(e){}
+          });
+        }).catch(function(){});
+      }
+    }catch(e){}
+  }
+};
+
+/* =====================================================================
+   JUEGO
+   ===================================================================== */
+var G={mode:"game",level:"medio",pool:[],idx:0,score:0,locked:false,current:null,
+       rev:{queue:[],total:0,done:0,mastered:0}};
+var sessionBest={facil:0,medio:0,dificil:0};
+
+function setHud(l1,v1,l2,v2){
+  $("hudL1").textContent=l1; $("hudV1").textContent=String(v1);
+  $("hudL2").textContent=l2; $("hudV2").textContent=String(v2);
+}
+function bestFor(level){
+  var l=Ranking.lists[level];
+  return Math.max(sessionBest[level], l.length?l[0].score:0);
+}
+
+function startGame(level){
+  G.mode="game"; G.level=level; G.score=0; G.idx=0; G.locked=false;
+  var pool=shuffle(LEVELS[level].words).map(function(w){return {w:w,review:false};});
+
+  // Palabras de repaso: hasta 2 fallos pendientes se cuelan en las primeras preguntas
+  var pend=shuffle(Fallos.load()).slice(0,2);
+  pend.forEach(function(f){
+    pool=pool.filter(function(p){return p.w[0]!==f.w[0];});
+    var pos=Math.min(pool.length, 2+Math.floor(Math.random()*7));
+    pool.splice(pos,0,{w:f.w,review:true});
+  });
+  G.pool=pool;
+  setHud("Puntos",0,"Récord",bestFor(level));
+  show("screenGame");
+  nextQuestion();
+}
+
+function renderQuestion(item,isReview,showLevel){
+  G.current=item; G.locked=false;
+  $("feedback").textContent=""; $("feedback").className="feedback";
+  var chips=$("chips"); chips.innerHTML="";
+  if(showLevel) chips.appendChild(levelChip(G.level));
+  if(isReview) chips.appendChild(chip("Palabra de repaso","rev"));
+  var box=$("opts"); box.innerHTML="";
+  shuffle(item.w).forEach(function(w){
+    var b=document.createElement("button");
+    b.type="button"; b.className="opt"; b.textContent=w;
+    b.addEventListener("click",function(){answer(b,w);});
+    box.appendChild(b);
+  });
+}
+
+function nextQuestion(){
+  if(G.idx>=G.pool.length){ endGame(null,true); return; }
+  renderQuestion(G.pool[G.idx],G.pool[G.idx].review,true);
+}
+
+function lock(){
+  Array.prototype.forEach.call($("opts").querySelectorAll(".opt"),function(b){b.disabled=true;});
+}
+function revealCorrect(correct){
+  Array.prototype.forEach.call($("opts").querySelectorAll(".opt"),function(b){
+    if(b.textContent===correct) b.classList.add("good");
+  });
+}
+
+function answer(btn,w){
+  if(G.locked) return;
+  G.locked=true;
+  var cur=G.current, correct=cur.w[0], ok=(w===correct);
+  var fb=$("feedback");
+  lock();
+  if(ok) btn.classList.add("good","pop"); else { btn.classList.add("bad","shake"); revealCorrect(correct); }
+
+  if(G.mode==="game"){
+    if(ok){
+      if(cur.review) Fallos.right(correct);
+      G.score++; G.idx++;
+      $("hudV1").textContent=String(G.score);
+      fb.textContent="¡Muy bien! +1 punto"; fb.className="feedback ok";
+      setTimeout(nextQuestion,900);
+    }else{
+      if(cur.review) Fallos.wrong(correct); else Fallos.add(cur.w,G.level);
+      fb.textContent="¡Ups! Se acabó la partida"; fb.className="feedback ko";
+      setTimeout(function(){endGame({wrong:w,right:correct},false);},1800);
+    }
+  }else{
+    var r=G.rev; r.done++;
+    if(ok){
+      var m=Fallos.right(correct); if(m) r.mastered++;
+      fb.textContent=m?"¡Dominada! Ya no te saldrá más":"¡Bien! Una más y la dominas"; fb.className="feedback ok";
+    }else{
+      Fallos.wrong(correct);
+      if(!cur.retry){ r.queue.push({w:cur.w,retry:true}); r.total++; }
+      fb.textContent="Fíjate bien: "+correct; fb.className="feedback ko";
+    }
+    setRevHud();
+    setTimeout(nextReview,ok?1100:2000);
+  }
+}
+
+/* ---------- Fin de partida ---------- */
+function endGame(miss,completedAll){
+  var lv=G.level, score=G.score;
+  if(score>sessionBest[lv]) sessionBest[lv]=score;
+  $("endChip").innerHTML=""; $("endChip").appendChild(levelChip(lv));
+  $("endScore").textContent=String(score);
+  $("endSub").textContent=score===1?"palabra bien escrita":"palabras bien escritas seguidas";
+  $("endTitle").textContent=completedAll?"¡Increíble, las has acertado todas!":"¡Fin de la partida!";
+
+  var rv=$("review");
+  if(miss){
+    rv.hidden=false; rv.innerHTML="";
+    var t=document.createElement("div"); t.textContent="Para recordar:"; rv.appendChild(t);
+    var s=document.createElement("s"); s.textContent=miss.wrong; rv.appendChild(s);
+    rv.appendChild(document.createTextNode("  →  "));
+    var b=document.createElement("b"); b.textContent=miss.right; rv.appendChild(b);
+    var sm=document.createElement("small"); sm.textContent="Se ha guardado en «Mis fallos» para que la repases."; rv.appendChild(sm);
+  }else{ rv.hidden=true; }
+
+  var q=Ranking.qualifies(lv,score);
+  $("nameForm").hidden=!q;
+  $("noTop").hidden=q;
+  $("formErr").textContent="";
+  $("endBtns").hidden=q;
+  $("btnEndRepaso").hidden=Fallos.count()===0;
+  if(q){ $("inName").value=playerName(); }
+  show("screenEnd");
+  if(q) setTimeout(function(){$("inName").focus();},50);
+}
+
+$("nameForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var name=$("inName").value.trim().replace(/\s+/g," ");
+  var cls=$("inClass").value.trim();
+  if(name.length<2){ $("formErr").textContent="Escribe tu nombre para guardar la puntuación."; $("inName").focus(); return; }
+  var entry={name:name, cls:cls, score:G.score, level:G.level, date:Date.now()};
+  var btn=e.target.querySelector("button[type=submit]");
+  btn.disabled=true;
+  Ranking.add(G.level,entry).then(function(){
+    btn.disabled=false;
+    $("nameForm").hidden=true;
+    $("endBtns").hidden=false;
+    $("btnEndRepaso").hidden=Fallos.count()===0;
+    highlight=entry;
+    openRank(G.level);
+  });
+});
+
+/* =====================================================================
+   REPASO DE FALLOS
+   ===================================================================== */
+function setRevHud(){
+  setHud("Repaso",Math.min(G.rev.done,G.rev.total)+"/"+G.rev.total,"Dominadas",G.rev.mastered);
+}
+function startReview(){
+  var pend=Fallos.load();
+  if(!pend.length){ openFallos(); return; }
+  // Primero los que llevan más tiempo sin repasarse; máximo 10 por sesión
+  pend.sort(function(a,b){return (a.t||0)-(b.t||0);});
+  var pick=shuffle(pend.slice(0,10));
+  G.mode="review";
+  G.rev={queue:pick.map(function(f){return {w:f.w,retry:false};}),total:pick.length,done:0,mastered:0};
+  setRevHud();
+  show("screenGame");
+  nextReview();
+}
+function nextReview(){
+  if(!G.rev.queue.length){ endReview(); return; }
+  renderQuestion(G.rev.queue.shift(),false,false);
+  $("chips").appendChild(chip("Repaso","rev"));
+}
+function endReview(){
+  var left=Fallos.count(), m=G.rev.mastered;
+  $("revMastered").textContent=String(m);
+  $("revLeft").textContent=String(left);
+  var emoji="", title="¡Repaso terminado!", msg;
+  if(left===0){ emoji=""; title="¡Lista de fallos vacía!"; msg="Has dominado todas tus palabras. ¡Enhorabuena!"; }
+  else if(m>0){ msg="Las palabras que te quedan volverán a salir. Acierta cada una dos veces para dominarla."; }
+  else { msg="Esas palabras son un poco traicioneras. ¡Repasa otra vez y verás cómo mejoras!"; }
+  $("revTitle").textContent=title; $("revMsg").textContent=msg;
+  $("btnRevAgain").hidden=left===0;
+  show("screenRevEnd");
+}
+
+function openFallos(){
+  var a=Fallos.load();
+  a.sort(function(x,y){return (y.t||0)-(x.t||0);});
+  var ul=$("flist"); ul.innerHTML="";
+  a.forEach(function(f){
+    var li=document.createElement("li");
+    var w=document.createElement("span"); w.className="w"; w.textContent=f.w[0];
+    var meta=document.createElement("span"); meta.className="meta";
+    var lv=LEVELS[f.l]?LEVELS[f.l].stars:"";
+    var dots=document.createElement("span"); dots.className="dots";
+    dots.setAttribute("aria-label",(f.box||0)+" de 2 aciertos seguidos");
+    dots.textContent=(f.box>=1?"●":"○")+(f.box>=2?"●":"○");
+    meta.appendChild(document.createTextNode(lv+" ")); meta.appendChild(dots);
+    li.appendChild(w); li.appendChild(meta); ul.appendChild(li);
+  });
+  var name=playerName();
+  $("fallosIntro").textContent=a.length
+    ? (name?name+", e":"E")+"stas son las palabras en las que te has equivocado. Acierta cada una 2 veces seguidas en el repaso y desaparecerá."
+    : "";
+  $("fallosEmpty").hidden=a.length>0;
+  $("btnStartRepaso").hidden=a.length===0;
+  show("screenFallos");
+}
+
+/* =====================================================================
+   PANTALLA DE RANKING
+   ===================================================================== */
+var highlight=null, rankLevel="medio";
+function renderRank(){
+  Array.prototype.forEach.call($("tabs").querySelectorAll(".tab"),function(t){
+    t.setAttribute("aria-pressed",t.getAttribute("data-level")===rankLevel?"true":"false");
+  });
+  var list=Ranking.lists[rankLevel], ol=$("rankList"); ol.innerHTML="";
+  $("rankEmpty").hidden=list.length>0;
+  list.forEach(function(r,i){
+    var li=document.createElement("li");
+    if(highlight && r.date===highlight.date && r.name===highlight.name && rankLevel===highlight.level) li.className="me";
+    var pos=document.createElement("div"); pos.className="pos"; pos.textContent=String(i+1);
+    var nm=document.createElement("div"); nm.className="rname"; nm.textContent=r.name+(r.cls?" ("+r.cls+")":"");
+    var sc=document.createElement("div"); sc.className="rscore"; sc.textContent=String(r.score);
+    li.appendChild(pos); li.appendChild(nm); li.appendChild(sc);
+    ol.appendChild(li);
+  });
+  $("modeNote").textContent=Ranking.mode==="shared"
+    ? "Ranking compartido entre todos los jugadores."
+    : "Este ranking se guarda en este dispositivo.";
+}
+Ranking.onChange=function(){
+  if(!$("screenRank").hidden) renderRank();
+  if(!$("screenGame").hidden && G.mode==="game") $("hudV2").textContent=String(bestFor(G.level));
+};
+function openRank(level){
+  rankLevel=level||G.level||"medio";
+  renderRank(); show("screenRank");
+}
+
+/* =====================================================================
+   INICIO Y EVENTOS
+   ===================================================================== */
+function buildLevels(){
+  var box=$("levels");
+  LEVEL_KEYS.forEach(function(k){
+    var L=LEVELS[k];
+    var b=document.createElement("button"); b.type="button"; b.className="lvl"; b.setAttribute("data-level",k);
+    var left=document.createElement("span");
+    left.appendChild(document.createTextNode(L.label));
+    var sm=document.createElement("small"); sm.textContent=L.desc+" · "+L.words.length+" palabras"; left.appendChild(sm);
+    var st=document.createElement("span"); st.className="st"; st.textContent=L.stars;
+    b.appendChild(left); b.appendChild(st);
+    b.addEventListener("click",function(){startGame(k);});
+    box.appendChild(b);
+  });
+}
+function goHome(){ refreshFallosCount(); show("screenStart"); }
+
+$("logo").addEventListener("click",function(){
+  if(!$("screenGame").hidden && !confirm("Si sales ahora, se pierde el progreso de esta partida. ¿Salir?")) return;
+  goHome();
+});
+$("btnRankTop").addEventListener("click",function(){
+  if(!$("screenGame").hidden && !confirm("Si sales ahora, se pierde el progreso de esta partida. ¿Salir?")) return;
+  openRank(G.level);
+});
+$("btnRankStart").addEventListener("click",function(){openRank(G.level);});
+$("btnEndRank").addEventListener("click",function(){openRank(G.level);});
+$("btnAgain").addEventListener("click",function(){startGame(G.level);});
+$("btnEndHome").addEventListener("click",goHome);
+$("btnEndRepaso").addEventListener("click",startReview);
+$("btnFallos").addEventListener("click",openFallos);
+$("btnStartRepaso").addEventListener("click",startReview);
+$("btnFallosBack").addEventListener("click",goHome);
+$("btnRevAgain").addEventListener("click",startReview);
+$("btnRevHome").addEventListener("click",goHome);
+$("btnBack").addEventListener("click",function(){
+  highlight=null;
+  var t=lastScreen;
+  if(t==="screenGame"||t==="screenRevEnd") t="screenStart";
+  if(t==="screenStart") refreshFallosCount();
+  show(t);
+});
+Array.prototype.forEach.call($("tabs").querySelectorAll(".tab"),function(t){
+  t.addEventListener("click",function(){ rankLevel=t.getAttribute("data-level"); highlight=null; renderRank(); });
+});
+$("inPlayer").addEventListener("input",function(){
+  lsSet("ort6_player",$("inPlayer").value);
+  refreshFallosCount();
+});
+
+/* Teclado (ordenador): 1, 2, 3 eligen la opción */
+document.addEventListener("keydown",function(e){
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  if($("screenGame").hidden||G.locked) return;
+  var n=parseInt(e.key,10);
+  if(n>=1&&n<=3){
+    var b=$("opts").querySelectorAll(".opt")[n-1];
+    if(b&&!b.disabled){e.preventDefault();b.click();}
+  }
+});
+
+/* Arranque */
+buildLevels();
+$("inPlayer").value=lsGet("ort6_player")||"";
+refreshFallosCount();
+Ranking.init();
+})();
+</script>
+</body>
+</html>
