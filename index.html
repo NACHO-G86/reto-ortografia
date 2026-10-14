@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reto Ortografía · 6º de Primaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Figtree:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <button class="logo" id="logo" type="button" aria-label="Ir al inicio">Reto <span>Ortografía</span></button>
+    <button class="btn small" id="btnRankTop" type="button">Récords</button>
+  </header>
+
+  <!-- INICIO -->
+  <section id="screenStart" class="start">
+    <h1><span class="ln">¿Cómo se</span><span class="ln">escribe?</span></h1>
+    <p>Elige la palabra bien escrita. Cada acierto suma <b>1 punto</b>… ¡pero si fallas, se acaba la partida!</p>
+
+    <div class="card">
+      <label for="inPlayer">¿Cómo te llamas? <small>(así guardo tus fallos para repasarlos)</small></label>
+      <input type="text" id="inPlayer" maxlength="24" autocomplete="off" placeholder="Tu nombre">
+
+      <div class="levels" id="levels"></div>
+
+      <div class="btnrow">
+        <button class="btn secondary" id="btnFallos" type="button">Mis fallos <span class="count" id="fallosCount" hidden>0</span></button>
+        <button class="btn secondary" id="btnRankStart" type="button">Ver los 10 mejores</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- JUEGO / REPASO -->
+  <section id="screenGame" hidden>
+    <div class="hud">
+      <div class="pill"><small id="hudL1">Puntos</small><b id="hudV1">0</b></div>
+      <div class="pill"><small id="hudL2">Récord</small><b id="hudV2">0</b></div>
+    </div>
+    <div class="card">
+      <div class="chips" id="chips"></div>
+      <div class="question">¿Cuál está bien escrita?<span class="hint">Toca la opción correcta<span class="kbd-hint"> · o pulsa 1, 2 o 3 en el teclado</span></span></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- FIN DE PARTIDA -->
+  <section id="screenEnd" class="card" hidden>
+    <div class="center">
+      <div class="chips" id="endChip"></div>
+      <h2 id="endTitle">¡Fin de la partida!</h2>
+      <div class="big-score" id="endScore">0</div>
+      <p id="endSub">palabras seguidas</p>
+    </div>
+    <div class="review" id="review" hidden></div>
+
+    <form id="nameForm" hidden novalidate>
+      <h3 class="center">¡Estás entre los 10 mejores!</h3>
+      <label for="inName">Tu nombre</label>
+      <input type="text" id="inName" maxlength="24" autocomplete="off" placeholder="Nombre y primer apellido">
+      <label for="inClass">Tu clase <small>(opcional)</small></label>
+      <input type="text" id="inClass" maxlength="10" autocomplete="off" placeholder="Ej.: 6ºA">
+      <div class="err" id="formErr" role="alert"></div>
+      <button class="btn" type="submit">Guardar mi puntuación</button>
+    </form>
+
+    <p class="center" id="noTop" hidden>Aún no has entrado en el top 10 de este nivel. ¡Sigue practicando!</p>
+
+    <div id="endBtns">
+      <button class="btn" id="btnAgain" type="button">Jugar otra vez</button>
+      <button class="btn secondary" id="btnEndRepaso" type="button">Repasar mis fallos</button>
+      <button class="btn secondary" id="btnEndRank" type="button">Ver récords</button>
+      <button class="btn secondary" id="btnEndHome" type="button">Cambiar de nivel</button>
+    </div>
+  </section>
+
+  <!-- FIN DE REPASO -->
+  <section id="screenRevEnd" class="card center" hidden>
+    <h2 id="revTitle">¡Repaso terminado!</h2>
+    <div class="sumrow">
+      <div class="pill"><small>Dominadas</small><b id="revMastered">0</b></div>
+      <div class="pill"><small>Te quedan</small><b id="revLeft">0</b></div>
+    </div>
+    <p id="revMsg"></p>
+    <button class="btn" id="btnRevAgain" type="button">Seguir repasando</button>
+    <button class="btn secondary" id="btnRevHome" type="button">Volver al inicio</button>
+  </section>
+
+  <!-- MIS FALLOS -->
+  <section id="screenFallos" class="card" hidden>
+    <h2 class="center">Mis fallos</h2>
+    <p class="center" id="fallosIntro"></p>
+    <ul class="flist" id="flist"></ul>
+    <div class="empty" id="fallosEmpty" hidden>¡No tienes fallos pendientes!<br>Cuando te equivoques en una palabra, aparecerá aquí.</div>
+    <button class="btn" id="btnStartRepaso" type="button">Repasar ahora</button>
+    <button class="btn secondary" id="btnFallosBack" type="button">Volver</button>
+  </section>
+
+  <!-- RANKING -->
+  <section id="screenRank" class="card" hidden>
+    <h2 class="center">Los 10 mejores</h2>
+    <div class="tabs" id="tabs" role="group" aria-label="Nivel">
+      <button class="tab" type="button" data-level="facil" aria-pressed="false">★ Fácil</button>
+      <button class="tab" type="button" data-level="medio" aria-pressed="false">★★ Medio</button>
+      <button class="tab" type="button" data-level="dificil" aria-pressed="false">★★★ Difícil</button>
+    </div>
+    <ol class="rank" id="rankList"></ol>
+    <div class="empty" id="rankEmpty" hidden>Todavía no hay récords en este nivel. ¡Sé el primero!</div>
+    <button class="btn" id="btnBack" type="button">Volver</button>
+    <div class="mode" id="modeNote"></div>
+  </section>
+</div>
+
+<script src="jscript.js"></script>
+</body>
+</html>
